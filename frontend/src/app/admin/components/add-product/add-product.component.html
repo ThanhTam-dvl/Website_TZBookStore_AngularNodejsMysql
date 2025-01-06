@@ -1,0 +1,175 @@
+<div class="container tm-mt-big tm-mb-big">
+  <div class="row">
+    <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+      <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+        <div class="row">
+          <div class="col-12">
+            <h2 class="tm-block-title d-inline-block">Add New Product</h2>
+          </div>
+        </div>
+        <form (ngSubmit)="onSubmit()" #productForm="ngForm" class="tm-edit-product-form">
+          <div class="row tm-edit-product-row">
+            <div class="col-xl-6 col-lg-6 col-md-12">
+              <div class="form-group mb-3">
+                <label for="title">Product Name</label>
+                <input
+                  id="title"
+                  name="title"
+                  type="text"
+                  [(ngModel)]="product.title"
+                  class="form-control validate"
+                  required
+                />
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="author">Author</label>
+                <input
+                  id="author"
+                  name="author"
+                  type="text"
+                  [(ngModel)]="product.author"
+                  class="form-control validate"
+                  required
+                />
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="publisher">Publisher</label>
+                <input
+                  id="publisher"
+                  name="publisher"
+                  type="text"
+                  [(ngModel)]="product.publisher"
+                  class="form-control validate"
+                />
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="description">Description</label>
+                <textarea
+                  id="description"
+                  name="description"
+                  [(ngModel)]="product.description"
+                  class="form-control validate"
+                  rows="5"
+                ></textarea>
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="category">Category</label>
+                <select
+                  class="custom-select tm-select-accounts"
+                  id="category"
+                  name="category_id"
+                  [(ngModel)]="product.category_id"
+                  required
+                >
+                  <option [ngValue]="null">Select category</option>
+                  <option *ngFor="let category of categories" [value]="category.category_id">
+                    {{ category.category_name }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="row">
+                <div class="form-group mb-3 col-xs-12 col-sm-6">
+                  <label for="price">Price (VNĐ)</label>
+                  <input
+                    id="price"
+                    name="price"
+                    type="number"
+                    [(ngModel)]="product.price"
+                    class="form-control validate"
+                    required
+                  />
+                </div>
+                <div class="form-group mb-3 col-xs-12 col-sm-6">
+                  <label for="stock">Units In Stock</label>
+                  <input
+                    id="stock"
+                    name="stock_quantity"
+                    type="number"
+                    [(ngModel)]="product.stock_quantity"
+                    class="form-control validate"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="published_date">Published Date</label>
+                <input
+                  id="published_date"
+                  name="published_date"
+                  type="date"
+                  [(ngModel)]="product.published_date"
+                  class="form-control validate"
+                />
+              </div>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-12 mx-auto mb-4">
+              <div class="tm-product-img-edit mx-auto">
+                <img [src]="product.image_url || 'assets/images/no-image.png'" 
+                     alt="Product image" 
+                     class="img-fluid d-block mx-auto">
+                <i class="fas fa-cloud-upload-alt tm-upload-icon"
+                   onclick="document.getElementById('fileInput').click();">
+                </i>
+              </div>
+              
+              <div class="form-group mt-3">
+                <label for="imageUrl">Image URL</label>
+                <div class="input-group">
+                  <input
+                    id="imageUrl"
+                    name="image_url"
+                    type="text"
+                    [(ngModel)]="product.image_url"
+                    class="form-control"
+                    placeholder="Paste image URL here"
+                  />
+                  <div class="input-group-append">
+                    <button 
+                      class="btn btn-outline-secondary" 
+                      type="button"
+                      (click)="previewImage()"
+                    >
+                      Preview
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-3">
+                <p class="text-center">OR</p>
+              </div>
+              
+              <div class="custom-file mt-2 mb-3">
+                <input 
+                  id="fileInput" 
+                  type="file" 
+                  style="display:none;" 
+                  (change)="onFileSelected($event)"
+                  accept="image/*"
+                />
+                <input
+                  type="button"
+                  class="btn btn-primary btn-block mx-auto"
+                  value="UPLOAD IMAGE FROM COMPUTER"
+                  onclick="document.getElementById('fileInput').click();"
+                />
+              </div>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary btn-block text-uppercase">
+                Add Product Now
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

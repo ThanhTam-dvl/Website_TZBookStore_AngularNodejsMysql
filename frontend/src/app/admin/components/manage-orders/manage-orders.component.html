@@ -1,0 +1,131 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header bg-primary py-2">
+      <div class="d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 text-white">
+          <i class="fas fa-shopping-cart me-2"></i>
+          Quản Lý Đơn Hàng
+        </h6>
+        <span class="badge bg-light-primary">
+          {{orders.length}} đơn hàng
+        </span>
+      </div>
+    </div>
+    <div class="card-body">
+      <!-- Loading Spinner -->
+      <div *ngIf="loading" class="text-center py-3">
+        <div class="spinner-border spinner-border-sm" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="text-primary mt-2 small">Đang tải dữ liệu...</p>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="error" class="alert alert-danger py-2 small" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        {{ error }}
+      </div>
+
+      <!-- Orders Table -->
+      <div *ngIf="!loading && !error" class="table-responsive">
+        <table class="table table-hover align-middle custom-table">
+          <thead>
+            <tr>
+              <th class="py-3 text-primary">Mã Đơn</th>
+              <th class="py-3 text-primary">Khách Hàng</th>
+              <th class="py-3 text-primary">Ngày Đặt</th>
+              <th class="py-3 text-primary">Tổng Tiền</th>
+              <th class="py-3 text-primary">Trạng Thái</th>
+              <th class="py-3 text-primary text-center">Thao Tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of orders | orderBy:'created_at':'desc'" class="order-row">
+              <td class="fw-bold text-primary">#{{order.order_id}}</td>
+              <td>
+                <div class="fw-medium text-dark">{{order.customer_name}}</div>
+                <small class="text-primary">
+                  <i class="far fa-envelope me-1"></i>{{order.email}}
+                </small>
+              </td>
+              <td>
+                <div class="text-dark">{{order.created_at | date:'dd/MM/yyyy'}}</div>
+                <small class="text-primary">{{order.created_at | date:'HH:mm'}}</small>
+              </td>
+              <td class="fw-bold text-primary">{{order.total_amount | number:'1.0-0'}}đ</td>
+              <td>
+                <span [class]="'badge ' + getStatusClass(order.status)">
+                  {{getStatusText(order.status)}}
+                </span>
+              </td>
+              <td>
+                <div class="d-flex justify-content-center gap-2">
+                  <!-- View Details Button -->
+                  <button class="btn btn-light-primary btn-sm" 
+                          (click)="viewOrderDetails(order.order_id)"
+                          title="Xem chi tiết">
+                    <i class="fas fa-eye"></i>
+                  </button>
+
+                  <!-- Status Update Dropdown -->
+                  <div class="btn-group" *ngIf="order.status !== 'cancelled'">
+                    <button type="button" 
+                            class="btn btn-primary btn-sm dropdown-toggle" 
+                            data-bs-toggle="dropdown" 
+                            aria-expanded="false">
+                      <i class="fas fa-edit me-1"></i>
+                      Cập Nhật
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li *ngIf="order.status === 'pending'">
+                        <a class="dropdown-item" href="javascript:void(0)" 
+                           (click)="updateOrderStatus(order.order_id, 'processing')">
+                          <i class="fas fa-check-circle me-2"></i>
+                          Xác Nhận Đơn
+                        </a>
+                      </li>
+                      <li *ngIf="order.status === 'processing'">
+                        <a class="dropdown-item" href="javascript:void(0)" 
+                           (click)="updateOrderStatus(order.order_id, 'shipping')">
+                          <i class="fas fa-truck me-2"></i>
+                          Chuyển Sang Vận Chuyển
+                        </a>
+                      </li>
+                      <li *ngIf="order.status === 'shipping'">
+                        <a class="dropdown-item" href="javascript:void(0)" 
+                           (click)="updateOrderStatus(order.order_id, 'completed')">
+                          <i class="fas fa-flag-checkered me-2"></i>
+                          Hoàn Thành Đơn
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Cancellation Request Buttons -->
+                  <div class="btn-group" *ngIf="order.status === 'cancel_requested'">
+                    <button class="btn btn-light-success btn-sm" 
+                            (click)="handleCancellationRequest(order.order_id, true)"
+                            title="Chấp nhận hủy đơn">
+                      <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn btn-light-danger btn-sm" 
+                            (click)="handleCancellationRequest(order.order_id, false)"
+                            title="Từ chối hủy đơn">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- No Orders Message -->
+        <div *ngIf="orders.length === 0" class="text-center py-3">
+          <i class="fas fa-inbox fa-2x text-primary mb-2"></i>
+          <p class="text-primary small">Chưa có đơn hàng nào</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

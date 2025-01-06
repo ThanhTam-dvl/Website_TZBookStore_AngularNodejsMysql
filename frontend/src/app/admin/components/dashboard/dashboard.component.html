@@ -1,0 +1,155 @@
+<div class="container-fluid px-5 py-4">
+  <!-- Stats Cards Row -->
+  <div class="row g-4 mb-5">
+    <div class="col-md-3">
+      <div class="card bg-primary text-white h-100 shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-title mb-0">Đơn hàng chờ xử lý</h6>
+              <h2 class="mt-2 mb-0">{{orderStats.pending}}</h2>
+            </div>
+            <i class="fas fa-clock fa-2x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card bg-info text-white h-100 shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-title mb-0">Đơn hàng đang xử lý</h6>
+              <h2 class="mt-2 mb-0">{{orderStats.processing}}</h2>
+            </div>
+            <i class="fas fa-spinner fa-2x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card bg-success text-white h-100 shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-title mb-0">Đơn hàng hoàn thành</h6>
+              <h2 class="mt-2 mb-0">{{orderStats.completed}}</h2>
+            </div>
+            <i class="fas fa-check-circle fa-2x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card bg-danger text-white h-100 shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-title mb-0">Đơn hàng đã hủy</h6>
+              <h2 class="mt-2 mb-0">{{orderStats.cancelled}}</h2>
+            </div>
+            <i class="fas fa-times-circle fa-2x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts & Tables Row -->
+  <div class="row g-5">
+    <!-- Biểu đồ thống kê -->
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-white py-3">
+          <h5 class="card-title mb-0">Thống kê đơn hàng</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="orderStatusChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sách sắp hết hàng -->
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-white py-3">
+          <h5 class="card-title mb-0">Sách sắp hết hàng</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Tên sách</th>
+                  <th>Số lượng</th>
+                  <th>Trạng thái</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let book of lowStockBooks">
+                  <td>{{book.title}}</td>
+                  <td>{{book.stock_quantity}}</td>
+                  <td>
+                    <span class="badge" [ngClass]="{
+                      'bg-danger': book.stock_quantity <= 5,
+                      'bg-warning': book.stock_quantity > 5 && book.stock_quantity <= 10
+                    }">
+                      {{book.stock_quantity <= 5 ? 'Cần nhập hàng' : 'Sắp hết'}}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Orders Table -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header bg-white py-3">
+          <h5 class="card-title mb-0">Đơn hàng gần đây</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Mã đơn hàng</th>
+                  <th>Khách hàng</th>
+                  <th>Tổng tiền</th>
+                  <th>Trạng thái</th>
+                  <th>Ngày đặt</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let order of recentOrders">
+                  <td>#{{order.order_id}}</td>
+                  <td>{{order.customer_name}}</td>
+                  <td>{{order.total_amount | currency:'VND'}}</td>
+                  <td>
+                    <span class="badge" [ngClass]="{
+                      'bg-warning': order.status === 'pending',
+                      'bg-info': order.status === 'processing',
+                      'bg-success': order.status === 'completed',
+                      'bg-danger': order.status === 'cancelled'
+                    }">
+                      {{order.status}}
+                    </span>
+                  </td>
+                  <td>{{order.created_at | date:'short'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

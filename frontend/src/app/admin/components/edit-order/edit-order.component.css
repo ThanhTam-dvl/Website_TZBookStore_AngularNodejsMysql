@@ -1,0 +1,180 @@
+.edit-order-container {
+  padding: 1.5rem;
+  background-color: #4f6d7a;
+  min-height: 100vh;
+}
+
+/* Thêm max-width và căn giữa cho container */
+.container-fluid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.card {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+}
+
+/* Thêm padding cho card */
+.card-body {
+  padding: 1.5rem;
+}
+
+/* Điều chỉnh độ rộng của form groups */
+.form-group {
+  max-width: 100%;
+}
+
+.form-control, .form-select {
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid #4ac4e2;
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #4ac4e2;
+  box-shadow: 0 0 0 0.2rem rgba(74, 196, 226, 0.25);
+}
+
+.form-label {
+  color: #9fefff !important;
+  font-weight: 500;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+}
+
+.card-header {
+  background-color: rgba(74, 196, 226, 0.1) !important;
+  border-bottom: 1px solid rgba(74, 196, 226, 0.2);
+}
+
+.btn-primary {
+  background-color: #4ac4e2;
+  border-color: #4ac4e2;
+  color: #fff;
+  font-weight: 500;
+}
+
+.btn-primary:hover {
+  background-color: #3ab4d2;
+  border-color: #3ab4d2;
+}
+
+.btn-light {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-weight: 500;
+}
+
+.btn-light:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.text-white {
+  color: #4ac4e2 !important;
+}
+
+/* Điều chỉnh màu cho bảng */
+.table {
+  color: #e0f7fa;
+  margin-bottom: 0;
+  min-width: 600px;
+}
+
+.table thead {
+  background-color: rgba(74, 196, 226, 0.1) !important;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(74, 196, 226, 0.05);
+}
+
+/* Điều chỉnh màu cho text */
+.text-primary {
+  color: #9fefff !important;
+  font-weight: 600;
+}
+
+/* Style cho status dropdown */
+select.form-select {
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+/* Style cho error message */
+.alert-danger {
+  background-color: rgba(220, 53, 69, 0.1);
+  border-color: rgba(220, 53, 69, 0.2);
+  color: #ffd3d3;
+}
+
+/* Thêm responsive cho table */
+.table-responsive {
+  margin: 0;
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Thêm padding cho các ô trong bảng */
+.table th,
+.table td {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+}
+
+/* Điều chỉnh màu cho tiêu đề */
+h6.mb-0 {
+  color: #fff !important;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Style cho cột sản phẩm */
+.table td:first-child {
+  min-width: 200px;
+}
+
+/* Style cho các cột số */
+.table td:not(:first-child),
+.table th:not(:first-child) {
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* Style cho dòng tổng tiền */
+.table tfoot td {
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+  font-weight: 600;
+}
+
+/* Màu mới cho tổng tiền */
+.total-amount {
+  color: #ffd700 !important;
+  font-size: 1.1em;
+  font-weight: 700;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+}
+
+/* Style cho card body chứa bảng */
+.card-body.p-0 {
+  overflow: hidden;
+}
+
+/* Style cho hình ảnh sản phẩm */
+.product-image {
+  width: 40px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Style cho tên sản phẩm */
+.product-title {
+  margin-left: 0.75rem;
+  color: #fff;
+}

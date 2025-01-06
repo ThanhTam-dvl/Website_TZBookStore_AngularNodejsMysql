@@ -1,0 +1,245 @@
+<div class="container mt-5">
+
+  <div class="row tm-content-row">
+    <div class="col-12 tm-block-col">
+      <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+        <div class="d-flex justify-content-between align-items-center">
+          <h2 class="tm-block-title" style="color: #fff; font-weight: bold;">List of Accounts</h2>
+          <button 
+            class="btn" 
+            style="background-color: #00ccff; color: #fff;"
+            (click)="createNewAccount()"
+          >
+            <i class="fas fa-plus"></i> Add New Account
+          </button>
+        </div>
+        <p style="color: #9be64d;">Filter by Role</p>
+        <select class="custom-select" (change)="onRoleChange($event)">
+          <option *ngFor="let role of roles" [value]="role.value">
+            {{role.label}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- User List Section -->
+  <div class="row tm-content-row mt-3">
+    <div class="col-12 tm-block-col">
+      <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+        <h2 class="tm-block-title" style="color: #fff; font-weight: bold;">User List</h2>
+        
+        <!-- No users message -->
+        <div *ngIf="users.length === 0" class="text-center p-3" style="color: #9be64d;">
+          <p *ngIf="selectedRole === '0'">Please select a role to view users</p>
+          <p *ngIf="selectedRole !== '0'">No users found for selected role</p>
+        </div>
+
+        <!-- Users table -->
+        <div class="table-responsive" *ngIf="users.length > 0">
+          <table class="table table-hover table-striped tm-table-striped-even">
+            <thead>
+              <tr style="background-color: #435c70;">
+                <th style="color: #fff;">Username</th>
+                <th style="color: #fff;">Full Name</th>
+                <th style="color: #fff;">Email</th>
+                <th style="color: #fff;">Role</th>
+                <th style="color: #fff;">Status</th>
+                <th style="color: #fff;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of users">
+                <td style="color: #00ccff;">{{user.username}}</td>
+                <td style="color: #fff;">{{user.full_name}}</td>
+                <td style="color: #fff;">{{user.email}}</td>
+                <td>
+                  <span class="badge" style="background-color: #00ccff; color: #fff;">{{user.role}}</span>
+                </td>
+                <td>
+                  <span [class]="user.is_active ? 'badge badge-success' : 'badge badge-danger'">
+                    {{user.is_active ? 'Active' : 'Inactive'}}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn btn-sm" style="background-color: #00ccff; color: #fff;" (click)="selectUser(user)">
+                    <i class="fas fa-eye"></i> View Details
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account Settings Section -->
+  <div class="row tm-content-row" *ngIf="selectedUser || isCreatingNew">
+    <div class="col-12">
+      <div class="tm-bg-primary-dark tm-block tm-block-settings" style="padding: 30px;">
+        <h2 class="tm-block-title" style="color: #fff; font-weight: bold; margin-bottom: 30px;">
+          {{isCreatingNew ? 'Create New Account' : 'Account Settings'}}
+        </h2>
+        <form #accountForm="ngForm" (ngSubmit)="onSubmit(accountForm.value)" class="tm-signup-form row">
+          <!-- Username field -->
+          <div class="form-group col-lg-6">
+            <label for="username" style="color: #9be64d; display: block; margin-bottom: 10px;">
+              Username <span class="text-danger">*</span>
+            </label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              class="form-control validate"
+              style="background-color: #54657d; color: #fff; border: 1px solid #00ccff; height: 40px; width: 100%;"
+              [(ngModel)]="currentUser.username"
+              required
+              #usernameInput="ngModel"
+            />
+            <div *ngIf="usernameInput.invalid && (usernameInput.dirty || usernameInput.touched)" class="text-danger">
+              <small *ngIf="usernameInput.errors?.['required']">Username is required</small>
+            </div>
+          </div>
+
+          <!-- Email field -->
+          <div class="form-group col-lg-6">
+            <label for="email" style="color: #9be64d; display: block; margin-bottom: 10px;">
+              Email <span class="text-danger">*</span>
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              class="form-control validate"
+              style="background-color: #54657d; color: #fff; border: 1px solid #00ccff; height: 40px; width: 100%;"
+              [(ngModel)]="currentUser.email"
+              required
+              email
+              #emailInput="ngModel"
+            />
+            <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="text-danger">
+              <small *ngIf="emailInput.errors?.['required']">Email is required</small>
+              <small *ngIf="emailInput.errors?.['email']">Please enter a valid email</small>
+            </div>
+          </div>
+
+          <!-- Full Name field -->
+          <div class="form-group col-lg-6">
+            <label for="fullName" style="color: #9be64d; display: block; margin-bottom: 10px;">
+              Full Name <span class="text-danger">*</span>
+            </label>
+            <input
+              id="fullName"
+              name="full_name"
+              type="text"
+              class="form-control validate"
+              style="background-color: #54657d; color: #fff; border: 1px solid #00ccff; height: 40px; width: 100%;"
+              [(ngModel)]="currentUser.full_name"
+              required
+              #fullNameInput="ngModel"
+            />
+            <div *ngIf="fullNameInput.invalid && (fullNameInput.dirty || fullNameInput.touched)" class="text-danger">
+              <small *ngIf="fullNameInput.errors?.['required']">Full name is required</small>
+            </div>
+          </div>
+
+          <!-- Phone field -->
+          <div class="form-group col-lg-6">
+            <label for="phone" style="color: #9be64d; display: block; margin-bottom: 10px;">Phone</label>
+            <input
+              id="phone"
+              name="phone"
+              type="tel"
+              class="form-control validate"
+              style="background-color: #54657d; color: #fff; border: 1px solid #00ccff; height: 40px; width: 100%;"
+              [(ngModel)]="currentUser.phone"
+            />
+          </div>
+
+          <!-- Role field -->
+          <div class="form-group col-lg-6">
+            <label for="role" style="color: #9be64d; display: block; margin-bottom: 10px;">Role</label>
+            <select
+              id="role"
+              name="role"
+              class="form-control"
+              style="background-color: #54657d; color: #fff; border: 1px solid #00ccff; height: 40px; width: 100%; padding: 0 10px;"
+              [(ngModel)]="currentUser.role"
+            >
+              <option *ngFor="let role of roles" [value]="role.value" [disabled]="role.value === '0'" 
+                      style="background-color: #54657d; padding: 8px;">
+                {{role.label}}
+              </option>
+            </select>
+          </div>
+
+          <!-- Status field -->
+          <div class="form-group col-lg-6">
+            <label for="status" style="color: #9be64d; display: block; margin-bottom: 10px;">Status</label>
+            <select
+              id="status"
+              name="is_active"
+              class="form-control"
+              style="background-color: #54657d; color: #fff; border: 1px solid #00ccff; height: 40px; width: 100%; padding: 0 10px;"
+              [(ngModel)]="currentUser.is_active"
+            >
+              <option [ngValue]="true" style="background-color: #54657d; padding: 8px;">Active</option>
+              <option [ngValue]="false" style="background-color: #54657d; padding: 8px;">Inactive</option>
+            </select>
+          </div>
+
+          <!-- Add Password field for new account -->
+          <div class="form-group col-lg-6" *ngIf="isCreatingNew">
+            <label for="password" style="color: #9be64d; display: block; margin-bottom: 10px;">
+              Password <span class="text-danger">*</span>
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              class="form-control validate"
+              style="background-color: #54657d; color: #fff; border: 1px solid #00ccff; height: 40px; width: 100%;"
+              [(ngModel)]="currentUser.password"
+              required
+              #passwordInput="ngModel"
+            />
+            <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="text-danger">
+              <small *ngIf="passwordInput.errors?.['required']">Password is required</small>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="col-12 mt-4">
+            <button 
+              type="submit" 
+              class="btn btn-block text-uppercase"
+              style="background-color: #00ccff; color: #fff; height: 45px; font-weight: bold;"
+              [disabled]="accountForm.invalid"
+            >
+              <i class="fas" [ngClass]="isCreatingNew ? 'fa-plus' : 'fa-save'"></i>
+              {{isCreatingNew ? 'Create Account' : 'Update Profile'}}
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-secondary btn-block text-uppercase mt-3"
+              style="height: 45px; font-weight: bold;"
+              (click)="cancelEdit()"
+            >
+              <i class="fas fa-times"></i> Cancel
+            </button>
+            <button 
+              *ngIf="!isCreatingNew"
+              type="button" 
+              class="btn btn-danger btn-block text-uppercase mt-3"
+              style="height: 45px; font-weight: bold;"
+              (click)="onDeleteAccount()"
+            >
+              <i class="fas fa-trash"></i> Delete Account
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

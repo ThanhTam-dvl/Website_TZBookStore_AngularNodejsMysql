@@ -1,0 +1,141 @@
+<div class="edit-order-container">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header bg-primary py-2">
+        <div class="d-flex justify-content-between align-items-center">
+          <h6 class="mb-0 text-white">
+            <i class="fas fa-edit me-2"></i>
+            Chi Tiết Đơn Hàng #{{orderId}}
+          </h6>
+          <button class="btn btn-light-primary btn-sm" routerLink="/admin/manage-orders">
+            <i class="fas fa-arrow-left me-1"></i>
+            Quay Lại
+          </button>
+        </div>
+      </div>
+      
+      <div class="card-body">
+        <!-- Loading Spinner -->
+        <div *ngIf="loading" class="text-center py-3">
+          <div class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="text-primary mt-2 small">Đang tải dữ liệu...</p>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="error" class="alert alert-danger py-2 small" role="alert">
+          <i class="fas fa-exclamation-circle me-2"></i>
+          {{error}}
+        </div>
+
+        <!-- Order Form -->
+        <form *ngIf="!loading && !error && order" (ngSubmit)="onSubmit()">
+          <!-- Customer Info Card -->
+          <div class="card mb-4 border">
+            <div class="card-header bg-light py-2">
+              <h6 class="mb-0">
+                <i class="fas fa-user me-2"></i>
+                Thông Tin Khách Hàng
+              </h6>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label small fw-bold">Tên Khách Hàng</label>
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="order.customer_name" name="customerName">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label small fw-bold">Email</label>
+                    <input type="email" class="form-control form-control-sm" [(ngModel)]="order.email" name="email">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label small fw-bold">Số Điện Thoại</label>
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="order.phone" name="phone">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label small fw-bold">Địa Chỉ</label>
+                    <textarea class="form-control form-control-sm" [(ngModel)]="order.address" name="address" rows="2"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Details Card -->
+          <div class="card mb-4 border">
+            <div class="card-header bg-light py-2">
+              <div class="d-flex justify-content-between align-items-center">
+                <h6 class="mb-0">
+                  <i class="fas fa-shopping-cart me-2"></i>
+                  Chi Tiết Đơn Hàng
+                </h6>
+                <div class="d-flex align-items-center">
+                  <span class="me-2 small">Trạng Thái:</span>
+                  <select class="form-select form-select-sm w-auto" [(ngModel)]="order.status" name="status">
+                    <option value="pending">Chờ Xác Nhận</option>
+                    <option value="processing">Đang Xử Lý</option>
+                    <option value="shipping">Đang Giao Hàng</option>
+                    <option value="completed">Hoàn Thành</option>
+                    <option value="cancelled">Đã Hủy</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <thead class="bg-light">
+                    <tr>
+                      <th class="py-2">Sản Phẩm</th>
+                      <th class="py-2 text-center">Số Lượng</th>
+                      <th class="py-2 text-end">Đơn Giá</th>
+                      <th class="py-2 text-end">Thành Tiền</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of order.items">
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <img [src]="item.image_url" 
+                               alt="Product" 
+                               class="me-2"
+                               style="width: 40px; height: 60px; object-fit: cover;">
+                          <span class="small">{{item.title}}</span>
+                        </div>
+                      </td>
+                      <td class="text-center">{{item.quantity}}</td>
+                      <td class="text-end">{{item.price | number:'1.0-0'}}đ</td>
+                      <td class="text-end">{{item.quantity * item.price | number:'1.0-0'}}đ</td>
+                    </tr>
+                  </tbody>
+                  <tfoot class="bg-light">
+                    <tr>
+                      <td colspan="3" class="text-end fw-bold">Tổng Tiền:</td>
+                      <td class="text-end total-amount">{{order.total_amount | number:'1.0-0'}}đ</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="text-end">
+            <button type="button" class="btn btn-light me-2" routerLink="/admin/manage-orders">
+              <i class="fas fa-times me-1"></i>
+              Hủy
+            </button>
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save me-1"></i>
+              Lưu Thay Đổi
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

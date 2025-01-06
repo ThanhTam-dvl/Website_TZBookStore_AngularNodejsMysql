@@ -1,0 +1,153 @@
+<!-- Product Detail Start -->
+<div class="container-xxl py-6" style="padding-top: 130px;">
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" class="text-muted">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="#" class="text-muted">Sách</a></li>
+                <li class="breadcrumb-item active text-primary" aria-current="page">{{book.title}}</li>
+            </ol>
+        </nav>
+
+        <div class="row g-5">
+            <!-- Product Images -->
+            <div class="col-lg-6">
+                <div class="position-sticky top-0">
+                    <div class="border rounded-4 overflow-hidden mb-4 main-image-container">
+                        <img [src]="book.image_url || 'assets/default-book.jpg'" 
+                             class="img-fluid w-100 main-product-image" 
+                             [alt]="book.title">
+                        <div class="image-zoom-overlay">
+                            <span class="btn btn-primary rounded-circle" (click)="openImageModal()">
+                                <i class="fa fa-expand"></i>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Thumbnail Images -->
+                    <div class="d-flex justify-content-center thumbnail-gallery">
+                        <div class="mx-2" *ngFor="let image of book.thumbnails">
+                            <img [src]="image" 
+                                 class="img-thumbnail rounded cursor-pointer" 
+                                 [class.active]="image === book.image_url">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="col-lg-6">
+                <div class="ps-lg-5">
+                    <!-- Product Title -->
+                    <h1 class="display-6 mb-4 text-dark">{{book.title}}</h1>
+                    
+                    <!-- Price and Stock -->
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="price-tag">
+                            <span class="h3 text-primary me-3">{{book.price | number:'1.0-0'}}đ</span>
+                            <span *ngIf="book.old_price" class="text-muted text-decoration-line-through">
+                                {{book.old_price | number:'1.0-0'}}đ
+                            </span>
+                        </div>
+                        <!-- <div class="ms-auto">
+                            <span class="badge" 
+                                  [ngClass]="book.in_stock ? 'bg-success' : 'bg-danger'">
+                                {{book.in_stock ? 'Còn hàng' : 'Hết hàng'}}
+                            </span>
+                        </div> -->
+                    </div>
+
+                    <!-- Short Description -->
+                    <p class="text-muted mb-4">{{book.short_description}}</p>
+
+                    <!-- Product Description (New Section) -->
+                    <div class="mb-4">
+                        <h5 class="text-primary">Chi tiết sản phẩm</h5>
+                        <p>{{book.description}}</p>
+                    </div>
+
+                    <!-- Product Details -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fa fa-user text-primary me-2"></i>
+                                <span>Tác giả: {{book.author}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fa fa-building text-primary me-2"></i>
+                                <span>NXB: {{book.publisher}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fa fa-calendar text-primary me-2"></i>
+                                <span>Năm xuất bản: {{book.publish_year}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fa fa-file-alt text-primary me-2"></i>
+                                <span>Số trang: {{book.pages}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quantity and Cart -->
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="input-group quantity-selector me-3" style="max-width: 130px;">
+                            <button class="btn btn-outline-primary" (click)="changeQuantity(-1)">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <input type="number" class="form-control text-center" 
+                                   [(ngModel)]="quantity" 
+                                   min="1">
+                            <button class="btn btn-outline-primary" (click)="changeQuantity(1)">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                        <button class="btn btn-primary" (click)="addToCart()">Thêm vào giỏ hàng</button>
+
+                    </div>
+
+                    <!-- Social Share -->
+                    <div class="social-share mt-4">
+                        <span class="me-3 text-muted">Chia sẻ:</span>
+                        <div class="d-inline-flex">
+                            <a href="#" class="btn btn-outline-primary btn-sm me-2 rounded-circle">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-primary btn-sm me-2 rounded-circle">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-primary btn-sm me-2 rounded-circle">
+                                <i class="fab fa-google"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products Section -->
+        <div class="mt-5">
+            <h4 class="mb-4">Các sách liên quan</h4>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-6" *ngFor="let relatedBook of relatedBooks">
+                    <div class="card">
+                        <img [src]="relatedBook.image_url || 'assets/default-book.jpg'" class="card-img-top" alt="{{relatedBook.title}}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{relatedBook.title}}</h5>
+                            <p class="card-text">{{relatedBook.short_description}}</p>
+                            <!-- <a [routerLink]="['/product-detail', relatedBook.id]" class="btn btn-outline-primary">Xem chi tiết</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<!-- Product Detail End -->

@@ -1,0 +1,64 @@
+:host {
+  display: block;
+  background-color: #2A3F54;
+  min-height: calc(100vh - 56px);
+}
+
+.card {
+  border: none;
+  transition: transform 0.2s ease-in-out;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.table th {
+  border-top: none;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #73879C;
+}
+
+.badge {
+  padding: 0.5em 0.75em;
+}
+
+.card-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #73879C;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Custom scrollbar cho table responsive */
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #73879C;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #5A6B7D;
+}
+
+/* Màu nền cho bảng */
+.table {
+  color: #73879C;
+}
+
+/* Màu nền cho header của bảng */
+.table thead th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
