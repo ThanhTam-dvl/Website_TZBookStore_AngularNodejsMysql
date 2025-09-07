@@ -130,16 +130,15 @@ mysql -u root -p bookstoredb < database/bookstoredb.sql
 
 ```bash
 cd backend
-npm start
+npx npdemon server.js/npm start
 ```
-
 Backend chạy tại: `http://localhost:3000`
 
 #### 8. Khởi chạy Frontend
 
 ```bash
 cd frontend
-ng serve
+ng serve -o
 ```
 
 Frontend chạy tại: `http://localhost:4200`
